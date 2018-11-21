@@ -1,8 +1,8 @@
 import connexion
 
-app = connexion.App(__name__, specification_dir='./')
-
+app = connexion.FlaskApp(__name__, specification_dir='./')
 app.add_api('swagger.yml')
+app.app.config['ENV'] = 'development'
 
 
 @app.route('/')

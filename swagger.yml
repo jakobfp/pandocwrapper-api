@@ -1,0 +1,37 @@
+swagger: "2.0"
+info:
+  description: This is the swagger file that goes with our server code
+  version: "1.0.0"
+  title: Swagger REST Article
+consumes:
+  - "application/json"
+produces:
+  - "application/json"
+
+basePath: "/api"
+
+paths:
+  /convert:
+    get:
+      operationId: converter.convert
+      summary: Converts given file into given format.
+      description: Requires a file and the design it should be converted to.
+      parameters:
+        - name: file
+          in: query
+          type: string
+          description: Path to the file
+          required: true
+        - name: design
+          in: query
+          type: string
+          description: Desgin the file should be converted to.
+          required: true
+        - name: bib_file
+          in: query
+          type: string
+          description: Bibliography file, if given.
+          required: false
+      responses:
+        200:
+          description: Succesfully converted file.
