@@ -1,0 +1,122 @@
+\documentclass[$if(fontsize)$$fontsize$,$endif$$if(lang)$$babel-lang$,$endif$$if(papersize)$$papersize$paper,$endif$$if(beamer)$ignorenonframetext,$if(handout)$handout,$endif$$if(aspectratio)$aspectratio=$aspectratio$,$endif$$endif$$for(classoption)$$classoption$$sep$,$endfor$]{$documentclass$}
+
+\usepackage{fontspec,xltxtra,xunicode}
+
+\usepackage{amsmath}
+
+\usepackage[english]{babel}
+
+% hard coded margins
+\usepackage{geometry}
+\geometry{verbose,letterpaper,tmargin=3cm,bmargin=3cm,lmargin=3cm,rmargin=3cm}
+
+% hard coded font
+\setmainfont[Path=fonts/, UprightFont=*.ttf, BoldFont=*B.ttf, ItalicFont=*I.ttf, BoldItalicFont=*BI.ttf]{HTWBerlinOffice}
+\setsansfont[Path=fonts/, UprightFont=*.ttf, BoldFont=*B.ttf, ItalicFont=*I.ttf, BoldItalicFont=*BI.ttf]{HTWBerlinOffice}
+\setmonofont[Path=fonts/, UprightFont=*.ttf, BoldFont=*B.ttf, ItalicFont=*I.ttf, BoldItalicFont=*BI.ttf]{HTWBerlinOffice}
+
+\usepackage{xcolor}
+\definecolor{HTWGreenBasic}{RGB}{118, 185, 0}
+\definecolor{HTWGreenDark}{RGB}{83, 131, 0}
+
+\usepackage{sectsty, titlesec}
+%\allsectionsfont{\color{blue}\itshape\underline}
+
+\sectionfont{\color{HTWGreenDark}\selectfont}
+\subsectionfont{\color{HTWGreenBasic}\selectfont}
+\subsubsectionfont{\color{HTWGreenBasic}\selectfont}
+
+% pandoc prefers unindented paragraphs in the European style:
+\setlength{\parindent}{0pt}
+%  ... with paragraph breaks marked by a slight lengthening of
+% the space between paragraphs:
+\setlength{\parskip}{6pt plus 2pt minus 1pt}
+
+% page numbering
+\pagestyle{plain}
+
+
+% What if you make a table? -- pandoc knows, of course, and
+% then declares that its  variable `table` is True and
+% imports a table package suitable to its pleasantly simple tables.
+% Needless to say infinitely   complicated tables are possible in
+% LaTeX with suitable packages. We are spared the temptation:
+$if(tables)$
+\usepackage{array}
+\usepackage{longtable, booktabs}
+% Continuing on the topic of tables ... (we havent reached `endif`).
+% The commented out line below is in the default pandoc  latex.template.
+% Some unpleasantness with table formatting must be corrected.
+% This is needed because raggedright in table elements redefines \\:
+\newcommand{\PreserveBackslash}[1]{\let\temp=\\#1\let\\=\temp}
+\let\PBS=\PreserveBackslash
+$endif$
+
+% New topic: What if you use subscripts?
+% Pandoc remembers whether you did, assigning True to $subscript$
+% It then needs to adopt a default with an incantation like this:
+$if(subscript)$
+\newcommand{\textsubscr}[1]{\ensuremath{_{\scriptsize\textrm{#1}}}}
+$endif$
+
+% all about urls
+\usepackage[breaklinks=true]{hyperref}
+\hypersetup{colorlinks,%
+citecolor=blue,%
+filecolor=blue,%
+linkcolor=black,%
+urlcolor=blue}
+$if(url)$
+\usepackage{url}
+$endif$
+
+% IMAGES
+$if(graphics)$
+\usepackage{graphicx}
+% Comment from the pandoc default template:
+% We will generate all images so they have a width \maxwidth. This means
+% that they will get their normal width if they fit onto the page, but
+% are scaled down if they would overflow the margins.
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth
+\else\Gin@nat@width\fi}
+\makeatother
+\let\Oldincludegraphics\includegraphics
+\renewcommand{\includegraphics}[1]{\Oldincludegraphics[width=\maxwidth]{#1}}
+$endif$
+
+% HEADER
+% you can include stuff for the header from a file specified on the command line;
+% I've never done this, but that stuff will go here:
+$for(header-includes)$
+$header-includes$
+$endfor$
+
+% TITLE
+$if(title)$
+\title{\color{HTWGreenDark}$title$}
+$endif$
+\author{$for(author)$$author$$sep$\\$endfor$}
+$if(date)$
+\date{$date$}
+$endif$
+
+
+\begin{document}
+
+ $if(title)$
+  \maketitle
+ $endif$
+
+ $if(abstract)$
+ \begin{abstract}
+  $abstract$
+ \end{abstract}
+ $endif$
+
+ $if(toc)$
+ \tableofcontents
+ $endif$
+
+ $body$
+\end{document}

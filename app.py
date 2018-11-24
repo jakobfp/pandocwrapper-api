@@ -1,8 +1,10 @@
 import connexion
+from flask_cors import CORS, cross_origin
 
 app = connexion.FlaskApp(__name__, specification_dir='./')
 app.add_api('swagger.yml')
 app.app.config['ENV'] = 'development'
+CORS(app.app)
 
 
 @app.route('/')

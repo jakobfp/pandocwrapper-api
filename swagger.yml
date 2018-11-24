@@ -35,3 +35,20 @@ paths:
       responses:
         200:
           description: Succesfully converted file.
+  /upload:
+    post:
+      operationId: converter.upload
+      summary: Uploads a file.
+      consumes:
+        - multipart/form-data  # and/or application/x-www-form-urlencoded
+      parameters:
+        - name: file
+          in: formData
+          description: The uploaded file data.
+          required: true
+          type: file
+      produces:
+        - application/json
+      responses:
+        200:
+          description: Uploaded file.
