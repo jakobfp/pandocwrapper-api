@@ -52,3 +52,21 @@ paths:
       responses:
         200:
           description: Uploaded file.
+  /download:
+      get:
+        operationId: converter.download
+        summary: Downloads specific file.
+        parameters:
+          - name: file
+            in: query
+            description: Name of the file to download.
+            required: true
+            type: string
+        responses:
+          200:
+            description: The converted PDF file
+            content:
+              application/pdf:
+                schema:
+                  type: string
+                  format: binary

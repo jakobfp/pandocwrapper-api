@@ -1,3 +1,4 @@
+from flask import send_from_directory
 import sys
 sys.path.append('../pandocwrapper')
 
@@ -39,3 +40,7 @@ def convert(file: str, design: str, bib_file: str = None):
             return {"error": result}
 
     return {"error": "file ("+file+") does not exists"}
+
+
+def download(file: str):
+    return send_from_directory(UPLOAD_FOLDER, file, as_attachment=True)
