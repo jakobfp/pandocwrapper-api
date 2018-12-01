@@ -39,7 +39,7 @@ def convert(file: str, design: str, bib_file: str = None):
         else:
             return {"error": result}
 
-    return {"error": "file ("+file+") does not exists"}
+    return {"error": "file ("+file+") does not exists, please upload again"}
 
 
 def download(file: str):
