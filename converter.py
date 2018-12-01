@@ -18,9 +18,9 @@ def allowed_file(filename):
 def upload(file):
     if allowed_file(file.filename):
         file.save(os.path.join(UPLOAD_FOLDER, file.filename))
-        return True
+        return {"success": True}
     else:
-        return {"error": "file not supported, please upload either .tex or .docx"}
+        return {"success": False, "error": "file not supported, please upload either .tex or .docx"}
 
 
 def convert(file: str, design: str, bib_file: str = None):
@@ -35,7 +35,7 @@ def convert(file: str, design: str, bib_file: str = None):
         tex_converter.construct_command()
         result = tex_converter.convert()
         if result is None:
-            return True
+            return {"success": True, "file_path": tex_converter.file_out}
         else:
             return {"error": result}
 
@@ -43,4 +43,5 @@ def convert(file: str, design: str, bib_file: str = None):
 
 
 def download(file: str):
-    return send_from_directory(UPLOAD_FOLDER, file, as_attachment=True)
+    # TODO: remove file after
+    return send_from_directory(LATEX_FILES, file, as_attachment=True)

@@ -7,6 +7,7 @@ consumes:
   - "application/json"
 produces:
   - "application/json"
+  - "application/pdf"
 
 basePath: "/api"
 
@@ -62,11 +63,10 @@ paths:
             description: Name of the file to download.
             required: true
             type: string
+        produces:
+          - application/pdf
         responses:
-          200:
+          '200':
             description: The converted PDF file
-            content:
-              application/pdf:
-                schema:
-                  type: string
-                  format: binary
+            schema:
+                  type: file
