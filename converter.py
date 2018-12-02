@@ -35,16 +35,13 @@ def upload(file):
         save_path = os.path.join(UPLOAD_FOLDER, new_dir, file.filename)
         file.save(save_path)
         rel_save_path = split_and_get_last_element("/latex/", save_path)
-        return {"success": True, "file_path": rel_save_path}
+        return {"success": True, "file_path": rel_save_path, "error": ""}
     else:
-        return {"success": False, "error": "file not supported, please upload either .tex or .docx"}
+        return {"success": False, "file_path": "", "error": "file not supported, please upload either .tex or .docx"}
 
 
-def convert(file: str, design: str, bib_file: str = None):
-    print(file)
+def convert_tex(file: str, design: str, bib_file: str = None):
     path_to_files = LATEX_FILES
-    # filename = split_and_get_last_element("\\", file)
-    # file = os.path.join('uploads', filename)
     if os.path.exists(os.path.join(LATEX_FILES, file)):
         template_string = design + ".tex"
         tex_converter = pandocwrapper.LatexConverter(file_in=file,
@@ -57,11 +54,11 @@ def convert(file: str, design: str, bib_file: str = None):
         output_filename = split_and_get_last_element("/", tex_converter.file_out)
 
         if result is None:
-            return {"success": True, "file_path": tex_converter.file_out, "file_name": output_filename}
+            return {"success": True, "file_path": tex_converter.file_out, "file_name": output_filename, "error": ""}
         else:
-            return {"error": result}
+            return {"success": False, "file_path": "", "file_name": "", "error": "something went wrong, check server log"}
 
-    return {"error": "file ("+file+") does not exists, please upload again"}
+    return {"success": False, "file_path": "", "file_name": "", "error": "file ("+file+") does not exists, please upload again"}
 
 
 def download(file: str):

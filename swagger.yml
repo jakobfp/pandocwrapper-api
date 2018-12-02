@@ -12,10 +12,10 @@ produces:
 basePath: "/api"
 
 paths:
-  /convert:
+  /convert_tex:
     get:
-      operationId: converter.convert
-      summary: Converts given file into given format.
+      operationId: converter.convert_tex
+      summary: Converts given .tex - file into pdf.
       description: Requires a file and the design it should be converted to.
       parameters:
         - name: file
@@ -26,16 +26,38 @@ paths:
         - name: design
           in: query
           type: string
-          description: Desgin the file should be converted to.
+          description: Design the file should be converted to.
           required: true
         - name: bib_file
           in: query
           type: string
           description: Bibliography file, if given.
           required: false
+      produces:
+        - application/json
       responses:
         200:
-          description: Succesfully converted file.
+          description: JSON-Object with properties, indicating if file was successfully converted and where to download it or an error message if a problem occured.
+          schema:
+            type: object
+            required: ["success"]
+            properties:
+              success:
+                type: boolean
+                description: Indicates if opertaion was successful executed. True or False.
+                example: true
+              file_path:
+                type: string
+                description: Relative path to the converted file on server.
+                example: "uploads/f172945953b5d78ad4e179265ff3c722fd9e55519743d0a7f06c524c/example-output.pdf"
+              file_name:
+                type: string
+                description: Name of the converted file.
+                example: "example-output.pdf"
+              error:
+                type: string
+                description: Error message.
+                example: ""
   /upload:
     post:
       operationId: converter.upload
@@ -52,21 +74,42 @@ paths:
         - application/json
       responses:
         200:
-          description: Uploaded file.
+          description: JSON-Object with properties, indicating if file successfully was uploaded and where or an error message if a problem occured.
+          schema:
+            type: object
+            required: ["success"]
+            properties:
+              success:
+                type: boolean
+                description: Indicates if opertaion was successful executed. True or False.
+                example: true
+              file_path:
+                type: string
+                description: Relative path to the uploaded file on server.
+                example: "uploads/f172945953b5d78ad4e179265ff3c722fd9e55519743d0a7f06c524c/example.tex"
+              error:
+                type: string
+                description: Error message.
+                example: ""
   /download:
-      get:
-        operationId: converter.download
-        summary: Downloads specific file.
-        parameters:
-          - name: file
-            in: query
-            description: Name of the file to download.
-            required: true
-            type: string
-        produces:
-          - application/pdf
-        responses:
-          '200':
-            description: The converted PDF file
-            schema:
-                  type: file
+    get:
+      operationId: converter.download
+      summary: Downloads specific file.
+      parameters:
+        - name: file
+          in: query
+          description: Path of the file to download.
+          required: true
+          type: string
+      produces:
+        - application/pdf
+        - application/json
+      responses:
+        '200':
+          description: The converted PDF file
+          schema:
+            type: file
+        '404':
+          description: File was not found.
+          schema:
+            type: object
