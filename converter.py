@@ -2,8 +2,9 @@ import os
 import sys
 import time
 import hashlib
+import shutil
 
-from flask import send_from_directory
+from flask import send_from_directory, after_this_request
 
 sys.path.append('../pandocwrapper')
 
@@ -20,6 +21,14 @@ ALLOWED_UPLOAD_EXT = {LATEX_EXT, WORD_EXT}
 
 def split_and_get_last_element(split_chr: str, string_to_split: str):
     return string_to_split.split(split_chr)[len(string_to_split.split(split_chr)) - 1]
+
+
+def split_path_and_get_all_but_last_element(split_chr: str, string_to_split: str):
+    splitted = string_to_split.split(split_chr)[:-1]
+    glued = ""
+    for element in splitted:
+        glued = os.path.join(glued, element)
+    return glued
 
 
 def mkdir(directory: str):
@@ -88,4 +97,13 @@ def convert_docx(file: str, design: str):
 
 def download(file: str):
     # TODO: remove file after
+    @after_this_request
+    def remove_files(response):
+        folder = split_path_and_get_all_but_last_element("/", file)
+        folder_path = os.path.join(ROOT, folder)
+        try:
+            shutil.rmtree(folder_path)
+        except OSError as e:
+            print(e)
+        return response
     return send_from_directory(ROOT, file, as_attachment=True)
