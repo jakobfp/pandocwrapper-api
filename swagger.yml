@@ -58,6 +58,52 @@ paths:
                 type: string
                 description: Error message.
                 example: ""
+  /convert_docx:
+    get:
+      operationId: converter.convert_docx
+      summary: Converts given .tex - file into pdf.
+      description: Requires a file and the design it should be converted to.
+      parameters:
+      - name: file
+        in: query
+        type: string
+        description: Path to the file
+        required: true
+      - name: design
+        in: query
+        type: string
+        description: Design the file should be converted to.
+        required: true
+      - name: bib_file
+        in: query
+        type: string
+        description: Bibliography file, if given.
+        required: false
+      produces:
+      - application/json
+      responses:
+        200:
+          description: JSON-Object with properties, indicating if file was successfully converted and where to download it or an error message if a problem occured.
+          schema:
+            type: object
+            required: ["success"]
+            properties:
+              success:
+                type: boolean
+                description: Indicates if opertaion was successful executed. True or False.
+                example: true
+              file_path:
+                type: string
+                description: Relative path to the converted file on server.
+                example: "uploads/f172945953b5d78ad4e179265ff3c722fd9e55519743d0a7f06c524c/example-output.pdf"
+              file_name:
+                type: string
+                description: Name of the converted file.
+                example: "example-output.pdf"
+              error:
+                type: string
+                description: Error message.
+                example: ""
   /upload:
     post:
       operationId: converter.upload
@@ -87,6 +133,10 @@ paths:
                 type: string
                 description: Relative path to the uploaded file on server.
                 example: "uploads/f172945953b5d78ad4e179265ff3c722fd9e55519743d0a7f06c524c/example.tex"
+              file_type:
+                type: string
+                description: Type of the uploaded file.
+                example: "tex"
               error:
                 type: string
                 description: Error message.

@@ -10,8 +10,12 @@ sys.path.append('../pandocwrapper')
 import pandocwrapper
 
 LATEX_FILES = './cis/latex'
-UPLOAD_FOLDER = os.path.join(LATEX_FILES, "uploads")
-ALLOWED_UPLOAD_EXT = {'tex', 'docx'}
+WORD_FILES = './cis/word'
+ROOT = "./cis"
+UPLOAD_FOLDER = "uploads"
+LATEX_EXT = 'tex'
+WORD_EXT = 'docx'
+ALLOWED_UPLOAD_EXT = {LATEX_EXT, WORD_EXT}
 
 
 def split_and_get_last_element(split_chr: str, string_to_split: str):
@@ -31,22 +35,23 @@ def allowed_file(filename):
 def upload(file):
     if allowed_file(file.filename):
         new_dir = hashlib.sha3_224(str(time.time()).encode('utf-8')).hexdigest()
-        mkdir(os.path.join(UPLOAD_FOLDER, new_dir))
-        save_path = os.path.join(UPLOAD_FOLDER, new_dir, file.filename)
+        file_type = split_and_get_last_element(".", file.filename)
+        mkdir(os.path.join(ROOT, UPLOAD_FOLDER, new_dir))
+        save_path = os.path.join(ROOT, UPLOAD_FOLDER, new_dir, file.filename)
         file.save(save_path)
-        rel_save_path = split_and_get_last_element("/latex/", save_path)
-        return {"success": True, "file_path": rel_save_path, "error": ""}
+        rel_save_path = split_and_get_last_element(ROOT, save_path)[1:]
+        return {"success": True, "file_path": rel_save_path, "file_type": file_type, "error": ""}
     else:
-        return {"success": False, "file_path": "", "error": "file not supported, please upload either .tex or .docx"}
+        return {"success": False, "file_path": "", "file_type": "", "error": "file not supported, please upload "
+                                                                             "either .tex or .word"}
 
 
 def convert_tex(file: str, design: str, bib_file: str = None):
-    path_to_files = LATEX_FILES
-    if os.path.exists(os.path.join(LATEX_FILES, file)):
+    if os.path.exists(os.path.join(ROOT, file)):
         template_string = design + ".tex"
         tex_converter = pandocwrapper.LatexConverter(file_in=file,
                                                      template=template_string,
-                                                     path_to_files=path_to_files,
+                                                     path_to_files=ROOT,
                                                      bib=bib_file)
         tex_converter.construct_command()
         result = tex_converter.convert()
@@ -56,11 +61,31 @@ def convert_tex(file: str, design: str, bib_file: str = None):
         if result is None:
             return {"success": True, "file_path": tex_converter.file_out, "file_name": output_filename, "error": ""}
         else:
-            return {"success": False, "file_path": "", "file_name": "", "error": "something went wrong, check server log"}
+            return {"success": False, "file_path": "", "file_name": "", "error": "something went wrong, check server "
+                                                                                 "log"}
 
-    return {"success": False, "file_path": "", "file_name": "", "error": "file ("+file+") does not exists, please upload again"}
+    return {"success": False, "file_path": "", "file_name": "", "error": "file ("+file+") does not exists, please "
+                                                                                       "upload again"}
+
+
+def convert_docx(file: str, design: str):
+    if os.path.exists(os.path.join(ROOT, file)):
+        template_string = design + ".tex"
+        docx_converter = pandocwrapper.DocxConverter(file_in=file, template=template_string, path_to_files=ROOT)
+        docx_converter.construct_command()
+        result = docx_converter.convert()
+
+        output_filename = split_and_get_last_element("/", docx_converter.file_out)
+        if result is None:
+            return {"success": True, "file_path": docx_converter.file_out, "file_name": output_filename, "error": ""}
+        else:
+            return {"success": False, "file_path": "", "file_name": "", "error": "something went wrong, check server "
+                                                                                 "log"}
+
+    return {"success": False, "file_path": "", "file_name": "", "error": "file ("+file+") does not exists, please "
+                                                                                       "upload again"}
 
 
 def download(file: str):
     # TODO: remove file after
-    return send_from_directory(LATEX_FILES, file, as_attachment=True)
+    return send_from_directory(ROOT, file, as_attachment=True)
