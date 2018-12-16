@@ -116,6 +116,11 @@ paths:
           description: The uploaded file data.
           required: true
           type: file
+        - name: path
+          in: formData
+          description: Where to save the file
+          required: false
+          type: string
       produces:
         - application/json
       responses:

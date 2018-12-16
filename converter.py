@@ -16,7 +16,8 @@ ROOT = "./cis"
 UPLOAD_FOLDER = "uploads"
 LATEX_EXT = 'tex'
 WORD_EXT = 'docx'
-ALLOWED_UPLOAD_EXT = {LATEX_EXT, WORD_EXT}
+BIB_EXT = 'bib'
+ALLOWED_UPLOAD_EXT = {LATEX_EXT, WORD_EXT, BIB_EXT}
 
 
 def split_and_get_last_element(split_chr: str, string_to_split: str):
@@ -41,18 +42,23 @@ def allowed_file(filename):
            filename.rsplit('.', 1)[1].lower() in ALLOWED_UPLOAD_EXT
 
 
-def upload(file):
-    if allowed_file(file.filename):
+def upload(file, path=None):
+    if not allowed_file(file.filename):
+        return {"success": False, "file_path": "", "file_type": "", "error": "file not supported, please upload "
+                                                                             "either .tex or .bib or .word"}
+    if path:
+        file_type = split_and_get_last_element(".", file.filename)
+        save_path = split_path_and_get_all_but_last_element("/", path)
+        save_path = os.path.join(ROOT, save_path, file.filename)
+    else:
         new_dir = hashlib.sha3_224(str(time.time()).encode('utf-8')).hexdigest()
         file_type = split_and_get_last_element(".", file.filename)
         mkdir(os.path.join(ROOT, UPLOAD_FOLDER, new_dir))
         save_path = os.path.join(ROOT, UPLOAD_FOLDER, new_dir, file.filename)
-        file.save(save_path)
-        rel_save_path = split_and_get_last_element(ROOT, save_path)[1:]
-        return {"success": True, "file_path": rel_save_path, "file_type": file_type, "error": ""}
-    else:
-        return {"success": False, "file_path": "", "file_type": "", "error": "file not supported, please upload "
-                                                                             "either .tex or .word"}
+
+    file.save(save_path)
+    rel_save_path = split_and_get_last_element(ROOT, save_path)[1:]
+    return {"success": True, "file_path": rel_save_path, "file_type": file_type, "error": ""}
 
 
 def convert_tex(file: str, design: str, bib_file: str = None):
@@ -96,7 +102,6 @@ def convert_docx(file: str, design: str):
 
 
 def download(file: str):
-    # TODO: remove file after
     @after_this_request
     def remove_files(response):
         folder = split_path_and_get_all_but_last_element("/", file)
