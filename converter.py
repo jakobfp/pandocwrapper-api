@@ -17,7 +17,11 @@ UPLOAD_FOLDER = "uploads"
 LATEX_EXT = 'tex'
 WORD_EXT = 'docx'
 BIB_EXT = 'bib'
-ALLOWED_UPLOAD_EXT = {LATEX_EXT, WORD_EXT, BIB_EXT}
+JPEG_EXT = 'jpeg'
+PNG_EXT = 'png'
+PDF_EXT = 'pdf'
+IMAGE_EXT = {JPEG_EXT, PNG_EXT, PDF_EXT}
+ALLOWED_UPLOAD_EXT = {LATEX_EXT, WORD_EXT, BIB_EXT, JPEG_EXT, PNG_EXT, PDF_EXT}
 
 
 def split_and_get_last_element(split_chr: str, string_to_split: str):
@@ -46,13 +50,19 @@ def upload(file, path=None):
     if not allowed_file(file.filename):
         return {"success": False, "file_path": "", "file_type": "", "error": "file not supported, please upload "
                                                                              "either .tex or .bib or .word"}
+    file_type = split_and_get_last_element(".", file.filename)
+
+    if file_type in IMAGE_EXT and path:
+        mkdir(os.path.join(ROOT, split_path_and_get_all_but_last_element("/", path), "imgs"))
+
     if path:
-        file_type = split_and_get_last_element(".", file.filename)
         save_path = split_path_and_get_all_but_last_element("/", path)
-        save_path = os.path.join(ROOT, save_path, file.filename)
+        save_path = os.path.join(ROOT, save_path, file.filename) \
+            if \
+            file_type not in IMAGE_EXT else \
+            os.path.join(ROOT, save_path, "imgs", file.filename)
     else:
         new_dir = hashlib.sha3_224(str(time.time()).encode('utf-8')).hexdigest()
-        file_type = split_and_get_last_element(".", file.filename)
         mkdir(os.path.join(ROOT, UPLOAD_FOLDER, new_dir))
         save_path = os.path.join(ROOT, UPLOAD_FOLDER, new_dir, file.filename)
 
