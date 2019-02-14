@@ -16,12 +16,13 @@ ROOT = "./cis"
 UPLOAD_FOLDER = "uploads"
 LATEX_EXT = 'tex'
 WORD_EXT = 'docx'
+ODT_EXT = 'odt'
 BIB_EXT = 'bib'
 JPEG_EXT = 'jpeg'
 PNG_EXT = 'png'
 PDF_EXT = 'pdf'
 IMAGE_EXT = {JPEG_EXT, PNG_EXT, PDF_EXT}
-ALLOWED_UPLOAD_EXT = {LATEX_EXT, WORD_EXT, BIB_EXT, JPEG_EXT, PNG_EXT, PDF_EXT}
+ALLOWED_UPLOAD_EXT = {LATEX_EXT, WORD_EXT, ODT_EXT, BIB_EXT, JPEG_EXT, PNG_EXT, PDF_EXT}
 
 
 def split_and_get_last_element(split_chr: str, string_to_split: str):
@@ -89,26 +90,30 @@ def convert_tex(file: str, design: str, bib_file: str = None):
             return {"success": False, "file_path": "", "file_name": "", "error": "something went wrong, check server "
                                                                                  "log"}
 
-    return {"success": False, "file_path": "", "file_name": "", "error": "file ("+file+") does not exists, please "
-                                                                                       "upload again"}
+    return {"success": False, "file_path": "", "file_name": "", "error": "file (" + file + ") does not exists, please "
+                                                                                           "upload again"}
 
 
-def convert_docx(file: str, design: str):
+def convert_docx_or_odt(file: str, design: str):
     if os.path.exists(os.path.join(ROOT, file)):
         template_string = design + ".tex"
-        docx_converter = pandocwrapper.DocxConverter(file_in=file, template=template_string, path_to_files=ROOT)
-        docx_converter.construct_command()
-        result = docx_converter.convert()
+        file_type = split_and_get_last_element(".", file)
+        if file_type == ODT_EXT:
+            converter = pandocwrapper.OdtConverter(file_in=file, template=template_string, path_to_files=ROOT)
+        else:
+            converter = pandocwrapper.DocxConverter(file_in=file, template=template_string, path_to_files=ROOT)
+        converter.construct_command()
+        result = converter.convert()
 
-        output_filename = split_and_get_last_element("/", docx_converter.file_out)
+        output_filename = split_and_get_last_element("/", converter.file_out)
         if result is None:
-            return {"success": True, "file_path": docx_converter.file_out, "file_name": output_filename, "error": ""}
+            return {"success": True, "file_path": converter.file_out, "file_name": output_filename, "error": ""}
         else:
             return {"success": False, "file_path": "", "file_name": "", "error": "something went wrong, check server "
                                                                                  "log"}
 
-    return {"success": False, "file_path": "", "file_name": "", "error": "file ("+file+") does not exists, please "
-                                                                                       "upload again"}
+    return {"success": False, "file_path": "", "file_name": "", "error": "file (" + file + ") does not exists, please "
+                                                                                           "upload again"}
 
 
 def download(file: str):

@@ -58,10 +58,10 @@ paths:
                 type: string
                 description: Error message.
                 example: ""
-  /convert_docx:
+  /convert_docx_or_odt:
     get:
-      operationId: converter.convert_docx
-      summary: Converts given .tex - file into pdf.
+      operationId: converter.convert_docx_or_odt
+      summary: Converts given .docx or .odt - file into pdf.
       description: Requires a file and the design it should be converted to.
       parameters:
       - name: file
@@ -74,11 +74,6 @@ paths:
         type: string
         description: Design the file should be converted to.
         required: true
-      - name: bib_file
-        in: query
-        type: string
-        description: Bibliography file, if given.
-        required: false
       produces:
       - application/json
       responses:
