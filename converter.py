@@ -21,6 +21,7 @@ BIB_EXT = 'bib'
 JPEG_EXT = 'jpeg'
 PNG_EXT = 'png'
 PDF_EXT = 'pdf'
+IMGS_FOLDER = 'imgs/'
 IMAGE_EXT = {JPEG_EXT, PNG_EXT, PDF_EXT}
 ALLOWED_UPLOAD_EXT = {LATEX_EXT, WORD_EXT, ODT_EXT, BIB_EXT, JPEG_EXT, PNG_EXT, PDF_EXT}
 
@@ -54,7 +55,7 @@ def upload(file, path=None):
     file_type = split_and_get_last_element(".", file.filename)
 
     if file_type in IMAGE_EXT and path:
-        mkdir(os.path.join(ROOT, split_path_and_get_all_but_last_element("/", path), "imgs"))
+        mkdir(os.path.join(ROOT, split_path_and_get_all_but_last_element("/", path), IMGS_FOLDER))
 
     if path:
         save_path = split_path_and_get_all_but_last_element("/", path)
@@ -96,10 +97,13 @@ def convert(file: str, design: str, bib_file: str = None):
                                                 template=template_string,
                                                 path_to_files=ROOT)
     elif file_type == LATEX_EXT:
+        resources_path = os.path.join(split_path_and_get_all_but_last_element("/", file), IMGS_FOLDER)
+        print(resources_path)
         converter = pandocwrapper.LatexConverter(file_in=file,
                                                  template=template_string,
                                                  path_to_files=ROOT,
-                                                 bib=bib_file)
+                                                 bib=bib_file,
+                                                 resources_path=resources_path)
     else:
         return {"success": False, "file_path": "", "file_name": "",
                 "error": "wrong file format - conversion of " + file_type + " no supported!"}
