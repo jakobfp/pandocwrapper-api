@@ -72,48 +72,47 @@ def upload(file, path=None):
     return {"success": True, "file_path": rel_save_path, "file_type": file_type, "error": ""}
 
 
-def convert_tex(file: str, design: str, bib_file: str = None):
-    if os.path.exists(os.path.join(ROOT, file)):
-        template_string = design + ".tex"
-        tex_converter = pandocwrapper.LatexConverter(file_in=file,
-                                                     template=template_string,
-                                                     path_to_files=ROOT,
-                                                     bib=bib_file)
-        tex_converter.construct_command()
-        result = tex_converter.convert()
+def convert(file: str, design: str, bib_file: str = None):
+    if not os.path.exists(os.path.join(ROOT, file)):
+        return {"success": False, "file_path": "", "file_name": "",
+                "error": "file (" + file + ") does not exists, please upload again"}
 
-        output_filename = split_and_get_last_element("/", tex_converter.file_out)
+    template_string = design + ".tex"
+    if not os.path.exists(os.path.join(ROOT, template_string)):
+        return {"success": False, "file_path": "", "file_name": "",
+                "error": "file (" + template_string + ") does not exists, choose another design"}
 
-        if result is None:
-            return {"success": True, "file_path": tex_converter.file_out, "file_name": output_filename, "error": ""}
-        else:
-            return {"success": False, "file_path": "", "file_name": "", "error": "something went wrong, check server "
-                                                                                 "log"}
+    if bib_file and not os.path.exists(os.path.join(ROOT, bib_file)):
+        return {"success": False, "file_path": "", "file_name": "",
+                "error": "file (" + bib_file + ") does not exists, please upload again"}
 
-    return {"success": False, "file_path": "", "file_name": "", "error": "file (" + file + ") does not exists, please "
-                                                                                           "upload again"}
+    file_type = split_and_get_last_element(".", file)
+    if file_type == ODT_EXT:
+        converter = pandocwrapper.OdtConverter(file_in=file,
+                                               template=template_string,
+                                               path_to_files=ROOT)
+    elif file_type == WORD_EXT:
+        converter = pandocwrapper.DocxConverter(file_in=file,
+                                                template=template_string,
+                                                path_to_files=ROOT)
+    elif file_type == LATEX_EXT:
+        converter = pandocwrapper.LatexConverter(file_in=file,
+                                                 template=template_string,
+                                                 path_to_files=ROOT,
+                                                 bib=bib_file)
+    else:
+        return {"success": False, "file_path": "", "file_name": "",
+                "error": "wrong file format - conversion of " + file_type + " no supported!"}
 
+    converter.construct_command()
+    result = converter.convert()
 
-def convert_docx_or_odt(file: str, design: str):
-    if os.path.exists(os.path.join(ROOT, file)):
-        template_string = design + ".tex"
-        file_type = split_and_get_last_element(".", file)
-        if file_type == ODT_EXT:
-            converter = pandocwrapper.OdtConverter(file_in=file, template=template_string, path_to_files=ROOT)
-        else:
-            converter = pandocwrapper.DocxConverter(file_in=file, template=template_string, path_to_files=ROOT)
-        converter.construct_command()
-        result = converter.convert()
+    output_filename = split_and_get_last_element("/", converter.file_out)
 
-        output_filename = split_and_get_last_element("/", converter.file_out)
-        if result is None:
-            return {"success": True, "file_path": converter.file_out, "file_name": output_filename, "error": ""}
-        else:
-            return {"success": False, "file_path": "", "file_name": "", "error": "something went wrong, check server "
-                                                                                 "log"}
-
-    return {"success": False, "file_path": "", "file_name": "", "error": "file (" + file + ") does not exists, please "
-                                                                                           "upload again"}
+    if result is None:
+        return {"success": True, "file_path": converter.file_out, "file_name": output_filename, "error": ""}
+    else:
+        return {"success": False, "file_path": "", "file_name": "", "error": "something went wrong, check server log"}
 
 
 def download(file: str):
