@@ -122,3 +122,44 @@ paths:
           description: File was not found.
           schema:
             type: object
+  /markdown:
+    post:
+      operationId: markdown_presentation.create
+      summary: Uploads a file.
+      consumes:
+        - application/json  # and/or application/x-www-form-urlencoded
+      produces:
+        - application/json
+      parameters:
+      - in: body
+        name: all_slides
+        description: The slides, title slides and regular slides together.
+        schema:
+          type: object
+          required:
+          - slides
+          - titleSlides
+          properties:
+            slides:
+              type: array
+            titleSlides:
+              type: array
+      responses:
+        200:
+          description: JSON-Object with properties, indicating if markdown file was successfully created and where it is saved or an error message if a problem occured.
+          schema:
+            type: object
+            required: ["success"]
+            properties:
+              success:
+                type: boolean
+                description: Indicates if opertaion was successful executed. True or False.
+                example: true
+              file_path:
+                type: string
+                description: Relative path to the created markdown file on server.
+                example: "uploads/f172945953b5d78ad4e179265ff3c722fd9e55519743d0a7f06c524c/example.md"
+              error:
+                type: string
+                description: Error message.
+                example: ""

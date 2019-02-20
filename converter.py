@@ -10,42 +10,7 @@ sys.path.append('../pandocwrapper')
 
 import pandocwrapper
 
-LATEX_FILES = './cis/latex'
-WORD_FILES = './cis/word'
-ROOT = "./cis"
-UPLOAD_FOLDER = "uploads"
-LATEX_EXT = 'tex'
-WORD_EXT = 'docx'
-ODT_EXT = 'odt'
-BIB_EXT = 'bib'
-JPEG_EXT = 'jpeg'
-PNG_EXT = 'png'
-PDF_EXT = 'pdf'
-IMGS_FOLDER = 'imgs/'
-IMAGE_EXT = {JPEG_EXT, PNG_EXT, PDF_EXT}
-ALLOWED_UPLOAD_EXT = {LATEX_EXT, WORD_EXT, ODT_EXT, BIB_EXT, JPEG_EXT, PNG_EXT, PDF_EXT}
-
-
-def split_and_get_last_element(split_chr: str, string_to_split: str):
-    return string_to_split.split(split_chr)[len(string_to_split.split(split_chr)) - 1]
-
-
-def split_path_and_get_all_but_last_element(split_chr: str, string_to_split: str):
-    splitted = string_to_split.split(split_chr)[:-1]
-    glued = ""
-    for element in splitted:
-        glued = os.path.join(glued, element)
-    return glued
-
-
-def mkdir(directory: str):
-    if not os.path.exists(directory):
-        os.makedirs(directory)
-
-
-def allowed_file(filename):
-    return '.' in filename and \
-           filename.rsplit('.', 1)[1].lower() in ALLOWED_UPLOAD_EXT
+from const import *
 
 
 def upload(file, path=None):
@@ -64,9 +29,8 @@ def upload(file, path=None):
             file_type not in IMAGE_EXT else \
             os.path.join(ROOT, save_path, "imgs", file.filename)
     else:
-        new_dir = hashlib.sha3_224(str(time.time()).encode('utf-8')).hexdigest()
-        mkdir(os.path.join(ROOT, UPLOAD_FOLDER, new_dir))
-        save_path = os.path.join(ROOT, UPLOAD_FOLDER, new_dir, file.filename)
+        new_dir = create_dir()
+        save_path = os.path.join(new_dir, file.filename)
 
     file.save(save_path)
     rel_save_path = split_and_get_last_element(ROOT, save_path)[1:]
@@ -129,4 +93,5 @@ def download(file: str):
         except OSError as e:
             print(e)
         return response
+
     return send_from_directory(ROOT, file, as_attachment=True)
