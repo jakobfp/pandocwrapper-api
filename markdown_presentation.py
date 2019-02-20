@@ -1,9 +1,7 @@
-import os
 import sys
-
-
 sys.path.append('../pandocwrapper')
 
+import pandocwrapper
 from const import *
 
 
@@ -38,7 +36,18 @@ def format_markdown(slides, title_slides):
 
 
 def convert(file_path):
-    return True
+    if not os.path.exists(file_path):
+        return {"success": False, "file_path": file_path, "error": "{} does not exists".format(file_path)}
+
+    rel_path = split_and_get_last_element(ROOT, file_path)[1:]
+    converter = pandocwrapper.MdConverter(file_in=rel_path, path_to_files=ROOT, template=BEAMER_TEMPLATE)
+    converter.construct_command()
+    result = converter.convert()
+
+    if result is None:
+        return {"success": True, "file_path": converter.file_out, "error": ""}
+    else:
+        return {"success": False, "file_path": "", "error": "something went wrong, check server log"}
 
 
 def create(all_slides):
@@ -48,4 +57,4 @@ def create(all_slides):
 
     markdown = format_markdown(all_slides['slides'], all_slides['titleSlides'])
     file_name = write_to_file(markdown, os.path.join(ROOT, UPLOAD_FOLDER))
-    return {"success": True, "file_path": file_name, "error": ""}
+    return convert(file_name)

@@ -1,6 +1,9 @@
 import os
 import hashlib
 import time
+import shutil
+from flask import send_from_directory, after_this_request
+
 
 LATEX_FILES = './cis/latex'
 WORD_FILES = './cis/word'
@@ -14,6 +17,7 @@ JPEG_EXT = 'jpeg'
 PNG_EXT = 'png'
 PDF_EXT = 'pdf'
 IMGS_FOLDER = 'imgs/'
+BEAMER_TEMPLATE = "htwberlin-beamer.tex"
 IMAGE_EXT = {JPEG_EXT, PNG_EXT, PDF_EXT}
 ALLOWED_UPLOAD_EXT = {LATEX_EXT, WORD_EXT, ODT_EXT, BIB_EXT, JPEG_EXT, PNG_EXT, PDF_EXT}
 
@@ -47,3 +51,16 @@ def create_dir(parent=None):
     mkdir(os.path.join(parent, new_dir))
     return os.path.join(parent, new_dir)
 
+
+def download(file: str):
+    @after_this_request
+    def remove_files(response):
+        folder = split_path_and_get_all_but_last_element("/", file)
+        folder_path = os.path.join(ROOT, folder)
+        try:
+            shutil.rmtree(folder_path)
+        except OSError as e:
+            print(e)
+        return response
+
+    return send_from_directory(ROOT, file, as_attachment=True)

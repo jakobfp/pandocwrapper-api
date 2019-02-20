@@ -1,15 +1,7 @@
-import os
 import sys
-import time
-import hashlib
-import shutil
-
-from flask import send_from_directory, after_this_request
-
 sys.path.append('../pandocwrapper')
 
 import pandocwrapper
-
 from const import *
 
 
@@ -83,15 +75,4 @@ def convert(file: str, design: str, bib_file: str = None):
         return {"success": False, "file_path": "", "file_name": "", "error": "something went wrong, check server log"}
 
 
-def download(file: str):
-    @after_this_request
-    def remove_files(response):
-        folder = split_path_and_get_all_but_last_element("/", file)
-        folder_path = os.path.join(ROOT, folder)
-        try:
-            shutil.rmtree(folder_path)
-        except OSError as e:
-            print(e)
-        return response
 
-    return send_from_directory(ROOT, file, as_attachment=True)
