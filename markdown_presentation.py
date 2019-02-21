@@ -1,6 +1,6 @@
 import sys
 sys.path.append('../pandocwrapper')
-
+import datetime
 import pandocwrapper
 from const import *
 
@@ -19,10 +19,10 @@ def format_markdown(slides, title_slides):
     if len(title_slides) > 0:
         title_slide = title_slides[0]
         markdown_string = "---\n"
-        markdown_string += "title: {}\n".format(title_slide['title'])
-        markdown_string += "subtitle: {}\n".format(title_slide['subtitle'])
-        markdown_string += "author: {}\n".format(title_slide['author'])
-        markdown_string += "date: {}\n".format(title_slide['date'])
+        markdown_string += "title: {}\n".format(title_slide['title'] if title_slide['title'] is not "" else "Title")
+        markdown_string += "subtitle: {}\n".format(title_slide['subtitle'] if title_slide['subtitle'] is not "" else "Subtitle")
+        markdown_string += "author: {}\n".format(title_slide['author'] if title_slide['author'] is not "" else "Author")
+        markdown_string += "date: {}\n".format(title_slide['date'] if title_slide['subtitle'] is not "" else datetime.datetime.today().strftime('%d-%m-%Y'))
         markdown_string += "---\n"
 
     for slide in slides:
