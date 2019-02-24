@@ -132,18 +132,24 @@ paths:
         - application/json
       parameters:
       - in: body
-        name: all_slides
-        description: The slides, title slides and regular slides together.
+        name: parameters
+        description: The slides, title slides and regular slides together plus boolean value to indicate if an outline slide and/or and thank-you slide should be created.
         schema:
           type: object
           required:
           - slides
           - titleSlides
+          - outline
+          - ty
           properties:
             slides:
               type: array
             titleSlides:
               type: array
+            outline:
+              type: boolean
+            ty:
+              type: boolean
       responses:
         200:
           description: JSON-Object with properties, indicating if markdown file was successfully created and where it is saved or an error message if a problem occured.

@@ -25,22 +25,26 @@ def format_markdown(slides, title_slides):
         markdown_string += "date: {}\n".format(title_slide['date'] if title_slide['subtitle'] is not "" else datetime.datetime.today().strftime('%d-%m-%Y'))
         markdown_string += "---\n"
 
+    empties = []
     for slide in slides:
-        markdown_string += "\n## {}\n".format(slide['title'])
+        if not slide['split'] and slide['col1'] == "":
+            empties.append(True)
+        markdown_string += "\n# {} \n\n\n## {}\n".format(slide['title'], slide['title'])
         content = "\n{}\n\n".format(slide['col1'])
         if slide['split']:
             content = "\n\\colA{{6cm}}\n\n{}\n\n\\colB{{6cm}}\n\n{}\n\n\\colEnd\n\n".format(slide['col1'], slide['col2'])
         markdown_string += content
-
+    if 0 < len(slides) == len(empties):
+        return False
     return markdown_string
 
 
-def convert(file_path):
+def convert(file_path, toc):
     if not os.path.exists(file_path):
         return {"success": False, "file_path": file_path, "error": "{} does not exists".format(file_path)}
 
     rel_path = split_and_get_last_element(ROOT, file_path)[1:]
-    converter = pandocwrapper.MdConverter(file_in=rel_path, path_to_files=ROOT, template=BEAMER_TEMPLATE)
+    converter = pandocwrapper.MdConverter(file_in=rel_path, path_to_files=ROOT, template=BEAMER_TEMPLATE, toc=toc)
     converter.construct_command()
     result = converter.convert()
 
@@ -50,11 +54,14 @@ def convert(file_path):
         return {"success": False, "file_path": "", "error": "something went wrong, check server log"}
 
 
-def create(all_slides):
+def create(parameters):
 
-    if len(all_slides['titleSlides']) is 0 and len(all_slides['slides']) is 0:
+    if len(parameters['titleSlides']) is 0 and len(parameters['slides']) is 0:
         return {"success": False, "file_path": "", "error": "no slides"}
 
-    markdown = format_markdown(all_slides['slides'], all_slides['titleSlides'])
+    markdown = format_markdown(parameters['slides'], parameters['titleSlides'])
+    if not markdown:
+        return {"success": False, "file_path": "", "error": "only empty slides"}
+
     file_name = write_to_file(markdown, os.path.join(ROOT, UPLOAD_FOLDER))
-    return convert(file_name)
+    return convert(file_name, parameters['outline'])
