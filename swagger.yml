@@ -60,7 +60,7 @@ paths:
                 example: ""
   /upload:
     post:
-      operationId: converter.upload
+      operationId: const.upload
       summary: Uploads a file.
       consumes:
         - multipart/form-data  # and/or application/x-www-form-urlencoded
@@ -79,7 +79,7 @@ paths:
         - application/json
       responses:
         200:
-          description: JSON-Object with properties, indicating if file successfully was uploaded and where or an error message if a problem occured.
+          description: JSON-Object with properties, indicating if file successfully was uploaded and where or an error message if a problem occurred.
           schema:
             type: object
             required: ["success"]

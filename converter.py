@@ -1,35 +1,22 @@
 import sys
 sys.path.append('../pandocwrapper')
-
 import pandocwrapper
 from const import *
 
 
-def upload(file, path=None):
-    if not allowed_file(file.filename):
-        return {"success": False, "file_path": "", "file_type": "", "error": "file not supported, please upload "
-                                                                             "either .tex or .bib or .word"}
-    file_type = split_and_get_last_element(".", file.filename)
-
-    if file_type in IMAGE_EXT and path:
-        mkdir(os.path.join(ROOT, split_path_and_get_all_but_last_element("/", path), IMGS_FOLDER))
-
-    if path:
-        save_path = split_path_and_get_all_but_last_element("/", path)
-        save_path = os.path.join(ROOT, save_path, file.filename) \
-            if \
-            file_type not in IMAGE_EXT else \
-            os.path.join(ROOT, save_path, "imgs", file.filename)
-    else:
-        new_dir = create_dir()
-        save_path = os.path.join(new_dir, file.filename)
-
-    file.save(save_path)
-    rel_save_path = split_and_get_last_element(ROOT, save_path)[1:]
-    return {"success": True, "file_path": rel_save_path, "file_type": file_type, "error": ""}
-
-
 def convert(file: str, design: str, bib_file: str = None):
+    """
+    convert(file, design, bib_file)
+
+    Converts a file (docx, odt or tex) into a PDF-file using the given design.
+
+    :param file: Name of the file to be converted
+    :param design: Name of the design that should be used. Only supports *htwberlin* so far
+    :param bib_file: Name of the bibliography file, if needed. (Default is `None`)
+
+    :returns: JSON-Object with properties, indicating if file successfully was converted and path of the output file **or** an error message if a problem occurred.
+
+    """
     if not os.path.exists(os.path.join(ROOT, file)):
         return {"success": False, "file_path": "", "file_name": "",
                 "error": "file (" + file + ") does not exists, please upload again"}
@@ -37,7 +24,7 @@ def convert(file: str, design: str, bib_file: str = None):
     template_string = design + ".tex"
     if not os.path.exists(os.path.join(ROOT, template_string)):
         return {"success": False, "file_path": "", "file_name": "",
-                "error": "file (" + template_string + ") does not exists, choose another design"}
+                "error": "(" + template_string + ") does not exists, choose another design"}
 
     if bib_file and not os.path.exists(os.path.join(ROOT, bib_file)):
         return {"success": False, "file_path": "", "file_name": "",
