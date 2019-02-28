@@ -2,7 +2,8 @@ pandocwrapper-api
 =================
 
 .. toctree::
-   :maxdepth: 4
+   :maxdepth: 2
+
    converter
    markdown-presentation
    const
