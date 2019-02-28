@@ -37,8 +37,31 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="converter-module">
-<h1>converter module<a class="headerlink" href="#converter-module" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="module-converter">
+<span id="converter-module"></span><h1>converter module<a class="headerlink" href="#module-converter" title="Permalink to this headline">¶</a></h1>
+<dl class="function">
+<dt id="converter.convert">
+<code class="descclassname">converter.</code><code class="descname">convert</code><span class="sig-paren">(</span><em>file: str</em>, <em>design: str</em>, <em>bib_file: str = None</em><span class="sig-paren">)</span><a class="headerlink" href="#converter.convert" title="Permalink to this definition">¶</a></dt>
+<dd><p>function:: convert(file, design, bib_file)</p>
+<p>Converts a file (docx, odt or tex) into a PDF-file using the given design.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>file</strong> -- Name of the file to be converted</li>
+<li><strong>design</strong> -- Name of the design that should be used. Only supports <em>htwberlin</em> so far</li>
+<li><strong>bib_file</strong> -- Name of the bibliography file, if needed. (Default is <cite>None</cite>)</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">JSON-Object with properties, indicating if file successfully was converted and path of the output file <strong>or</strong> an error message if a problem occurred.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
 </div>
 
 
