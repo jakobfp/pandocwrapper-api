@@ -14,7 +14,7 @@ def convert(file: str, design: str, bib_file: str = None):
     :param design: Name of the design that should be used. Only supports *htwberlin* so far
     :param bib_file: Name of the bibliography file, if needed. (Default is `None`)
 
-    :returns: JSON-Object with properties, indicating if file successfully was converted and path of the output file **or** an error message if a problem occurred.
+    :returns: Dictionary with fields, indicating if file successfully was converted and path of the output file **or** an error message if a problem occurred.
 
     """
     if not os.path.exists(os.path.join(ROOT, file)):

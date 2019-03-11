@@ -6,6 +6,15 @@ from const import *
 
 
 def write_to_file(markdown, path):
+    """
+    Writes markdown to a file and saves it in a specific path.
+
+    :param markdown: Markdown as a string
+    :param path: Path to the directory where the file should be saved.
+
+    :returns: Full path to the file.
+
+    """
     new_dir = create_dir(parent=path)
     file_name = os.path.join(new_dir, "presentation.md")
     with open(file_name, "w") as f:
@@ -14,6 +23,15 @@ def write_to_file(markdown, path):
 
 
 def format_markdown(slides, title_slides):
+    """
+    Formats slides and title_slide into a convertable markdown-string
+
+    :param slides: Dictionary of slides: each slide has two columns (`col1` and `col2`)
+    :param title_slides: Dictionary of title slides: each title slide has a `title`, `subtitle`, `author` and `date`
+
+    :returns: The formatted markdown string.
+
+    """
     markdown_string = ""
 
     if len(title_slides) > 0:
@@ -40,6 +58,15 @@ def format_markdown(slides, title_slides):
 
 
 def convert(file_path, toc):
+    """
+    Uses the pandocwrapper module to convert a markdown-file to a PDf presentation.
+
+    :param file_path: Path of the markdown file to be converted
+    :param toc: Boolean to indicate if an outline-slide should be created or not
+
+    :returns: Dictionary with fields, indicating if file successfully was converted and path of the output file **or** an error message if a problem occurred.
+
+    """
     if not os.path.exists(file_path):
         return {"success": False, "file_path": file_path, "error": "{} does not exists".format(file_path)}
 
@@ -55,7 +82,14 @@ def convert(file_path, toc):
 
 
 def create(parameters):
+    """
+    Takes the raw slides and title slide, formats them and converts them into a PDf presentation
 
+    :param parameters: Dictionary with `slides`, `title_slides` and `outline`.
+
+    :returns: Dictionary with fields, indicating if file successfully was converted and path of the output file **or** an error message if a problem occurred.
+
+    """
     if len(parameters['titleSlides']) is 0 and len(parameters['slides']) is 0:
         return {"success": False, "file_path": "", "error": "no slides"}
 
