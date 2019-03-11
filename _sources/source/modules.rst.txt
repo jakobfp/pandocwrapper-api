@@ -1,5 +1,5 @@
-pandocwrapper-api
-=================
+pandocwrapperapi
+================
 
 .. toctree::
    :maxdepth: 2
