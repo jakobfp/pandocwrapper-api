@@ -23,10 +23,28 @@ ALLOWED_UPLOAD_EXT = {LATEX_EXT, WORD_EXT, ODT_EXT, BIB_EXT, JPEG_EXT, PNG_EXT, 
 
 
 def split_and_get_last_element(split_chr: str, string_to_split: str):
+    """
+    Get last element of a given path.
+
+    :param split_chr: Character at which the string should be splitted
+    :param string_to_split: Path to be splitted
+
+    :returns: Last element of path.
+
+    """
     return string_to_split.split(split_chr)[len(string_to_split.split(split_chr)) - 1]
 
 
 def split_path_and_get_all_but_last_element(split_chr: str, string_to_split: str):
+    """
+    Get the path until a certain directory/file without the certain directory/file.
+
+    :param split_chr: Character at which the string should be splitted
+    :param string_to_split: Path to be splitted
+
+    :returns: Path without the last element.
+
+    """
     splitted = string_to_split.split(split_chr)[:-1]
     glued = ""
     for element in splitted:
@@ -35,16 +53,42 @@ def split_path_and_get_all_but_last_element(split_chr: str, string_to_split: str
 
 
 def mkdir(directory: str):
+    """
+    Create a directory if not already existing.
+
+    :param directory: Path of the directory to be created.
+
+    :returns: Nothing
+
+    """
     if not os.path.exists(directory):
         os.makedirs(directory)
 
 
 def allowed_file(filename):
+    """
+    Check if a file is allowed to be uploaded. Allowed files are defined in :py:const:`const.ALLOWED_UPLOADED_EXT`
+
+    :param filename: name of the file to be checked
+
+    :returns: True/False if the files i allowed or not.
+
+    """
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in ALLOWED_UPLOAD_EXT
 
 
 def create_dir(parent=None):
+    """
+    Create a directory with a unique name.
+
+    If no parent is given, the parent directory will be the default upload folder: :py:const:`const.ROOT` plus :py:const:`const.UPLOAD_FOLDER`
+
+    :param parent: the directory in which the new directory shall be created (default is None)
+
+    :returns: The path of the new directory.
+
+    """
     new_dir = hashlib.sha3_224(str(time.time()).encode('utf-8')).hexdigest()
     if not parent:
         parent = os.path.join(ROOT, UPLOAD_FOLDER)
@@ -53,6 +97,15 @@ def create_dir(parent=None):
 
 
 def download(file: str):
+    """
+    Download a file given by path relative to :py:const:`const.ROOT`.
+    Deletes the file after downloading
+
+    :param file: Relative path of the file to be downloaded
+
+    :returns: The file.
+
+    """
     @after_this_request
     def remove_files(response):
         folder = split_path_and_get_all_but_last_element("/", file)
@@ -68,8 +121,6 @@ def download(file: str):
 
 def upload(file, path=None):
     """
-    function:: upload(file, path)
-
     Uploads a file to an, optionally, given path.
 
     If no path is given, a subdirectory will be created using :py:func:`~const.create_dir`.
