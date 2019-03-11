@@ -37,38 +37,115 @@
 <dl class="function">
 <dt id="const.allowed_file">
 <code class="descclassname">const.</code><code class="descname">allowed_file</code><span class="sig-paren">(</span><em>filename</em><span class="sig-paren">)</span><a class="headerlink" href="#const.allowed_file" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Check if a file is allowed to be uploaded. Allowed files are defined in <code class="xref py py-const docutils literal notranslate"><span class="pre">const.ALLOWED_UPLOADED_EXT</span></code></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>filename</strong> – name of the file to be checked</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">True/False if the files i allowed or not.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 <dl class="function">
 <dt id="const.create_dir">
 <code class="descclassname">const.</code><code class="descname">create_dir</code><span class="sig-paren">(</span><em>parent=None</em><span class="sig-paren">)</span><a class="headerlink" href="#const.create_dir" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Create a directory with a unique name.</p>
+<p>If no parent is given, the parent directory will be the default upload folder: <code class="xref py py-const docutils literal notranslate"><span class="pre">const.ROOT</span></code> plus <code class="xref py py-const docutils literal notranslate"><span class="pre">const.UPLOAD_FOLDER</span></code></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>parent</strong> – the directory in which the new directory shall be created (default is None)</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The path of the new directory.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 <dl class="function">
 <dt id="const.download">
 <code class="descclassname">const.</code><code class="descname">download</code><span class="sig-paren">(</span><em>file: str</em><span class="sig-paren">)</span><a class="headerlink" href="#const.download" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Download a file given by path relative to <code class="xref py py-const docutils literal notranslate"><span class="pre">const.ROOT</span></code>.
+Deletes the file after downloading</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>file</strong> – Relative path of the file to be downloaded</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The file.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 <dl class="function">
 <dt id="const.mkdir">
 <code class="descclassname">const.</code><code class="descname">mkdir</code><span class="sig-paren">(</span><em>directory: str</em><span class="sig-paren">)</span><a class="headerlink" href="#const.mkdir" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Create a directory if not already existing.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>directory</strong> – Path of the directory to be created.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Nothing</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 <dl class="function">
 <dt id="const.split_and_get_last_element">
 <code class="descclassname">const.</code><code class="descname">split_and_get_last_element</code><span class="sig-paren">(</span><em>split_chr: str</em>, <em>string_to_split: str</em><span class="sig-paren">)</span><a class="headerlink" href="#const.split_and_get_last_element" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Get last element of a given path.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>split_chr</strong> – Character at which the string should be splitted</li>
+<li><strong>string_to_split</strong> – Path to be splitted</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">Last element of path.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 <dl class="function">
 <dt id="const.split_path_and_get_all_but_last_element">
 <code class="descclassname">const.</code><code class="descname">split_path_and_get_all_but_last_element</code><span class="sig-paren">(</span><em>split_chr: str</em>, <em>string_to_split: str</em><span class="sig-paren">)</span><a class="headerlink" href="#const.split_path_and_get_all_but_last_element" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Get the path until a certain directory/file without the certain directory/file.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>split_chr</strong> – Character at which the string should be splitted</li>
+<li><strong>string_to_split</strong> – Path to be splitted</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">Path without the last element.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 <dl class="function">
 <dt id="const.upload">
 <code class="descclassname">const.</code><code class="descname">upload</code><span class="sig-paren">(</span><em>file</em>, <em>path=None</em><span class="sig-paren">)</span><a class="headerlink" href="#const.upload" title="Permalink to this definition">¶</a></dt>
-<dd><p>function:: upload(file, path)</p>
-<p>Uploads a file to an, optionally, given path.</p>
+<dd><p>Uploads a file to an, optionally, given path.</p>
 <p>If no path is given, a subdirectory will be created using <a class="reference internal" href="#const.create_dir" title="const.create_dir"><code class="xref py py-func docutils literal notranslate"><span class="pre">create_dir()</span></code></a>.
 If a path is given, a subdirectory inside the <code class="xref py py-const docutils literal notranslate"><span class="pre">const.ROOT</span></code> directory defined in <code class="xref py py-mod docutils literal notranslate"><span class="pre">const.py</span></code>. Furthermore if the file is an image defined by its extension a “imgs” directory will be created nested.</p>
 <p>Only files defined in <code class="xref py py-const docutils literal notranslate"><span class="pre">const.ALLOWED_UPLOAD_EXT</span></code> are allowed to be uploaded.</p>
