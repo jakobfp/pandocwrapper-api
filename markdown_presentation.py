@@ -1,5 +1,3 @@
-import sys
-sys.path.append('../pandocwrapper')
 import datetime
 import pandocwrapper
 from const import *

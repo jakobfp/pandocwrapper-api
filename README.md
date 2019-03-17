@@ -4,7 +4,7 @@ API for [pandocwrapper](https://github.com/jakobfp/pandocwrapper).
 
 ### Requirements
 
-[pandocwrapper](https://github.com/jakobfp/pandocwrapper) and packages in [requirements](./requirements.txt)
+[pandocwrapper](https://github.com/jakobfp/pandocwrapper) (check README for setup) and packages in [requirements](./requirements.txt)
 
 ### Start API
 
