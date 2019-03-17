@@ -10,7 +10,20 @@ Welcome to pandocwrapperapi's documentation!
    :maxdepth: 2
    :caption: Contents:
 
-   source/modules
+const
+=====
+.. automodule:: const
+   :members:
+
+converter
+=========
+.. automodule:: converter
+   :members:
+
+markdown_presentation
+=====================
+.. automodule:: markdown_presentation
+   :members:
 
 
 
