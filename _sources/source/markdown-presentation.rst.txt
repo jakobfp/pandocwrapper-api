@@ -1,7 +1,0 @@
-markdown-presentation module
-============================
-
-.. automodule:: markdown_presentation
-    :members:
-    :undoc-members:
-    :show-inheritance:
