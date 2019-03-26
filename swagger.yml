@@ -1,6 +1,8 @@
 swagger: "2.0"
 info:
-  description: Description of the possible HTTP-Requests. Documentation of pandocwrapper can be found here https://jakobfp.github.io/pandocwrapper/.
+  description: Description of the possible HTTP-Requests.
+    Documentation of pandocwrapper can be found here https://jakobfp.github.io/pandocwrapper/.
+    Documentation of used modules can be found here https://jakobfp.github.io/pandocwrapper-api/
   version: "1.0.0"
   title: Rest-API for minimal pandocwrapper
 consumes:
@@ -125,7 +127,7 @@ paths:
   /markdown:
     post:
       operationId: markdown_presentation.create
-      summary: Uploads a file.
+      summary: Converts slides, produced with React-Component "MarkdownToBeamer", to a beamer PDF presentation.
       consumes:
         - application/json  # and/or application/x-www-form-urlencoded
       produces:
@@ -152,7 +154,7 @@ paths:
               type: boolean
       responses:
         200:
-          description: JSON-Object with properties, indicating if markdown file was successfully created and where it is saved or an error message if a problem occured.
+          description: JSON-Object with properties, indicating if markdown file was successfully converted and where the created pdf is saved or an error message if a problem occured.
           schema:
             type: object
             required: ["success"]
@@ -163,8 +165,8 @@ paths:
                 example: true
               file_path:
                 type: string
-                description: Relative path to the created markdown file on server.
-                example: "uploads/f172945953b5d78ad4e179265ff3c722fd9e55519743d0a7f06c524c/example.md"
+                description: Relative path to the created pdf file on server.
+                example: "uploads/f172945953b5d78ad4e179265ff3c722fd9e55519743d0a7f06c524c/example.pdf"
               error:
                 type: string
                 description: Error message.
