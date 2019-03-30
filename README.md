@@ -6,7 +6,7 @@ REST-API for [pandocwrapper](https://github.com/jakobfp/pandocwrapper). With som
 
 [pandocwrapper](https://github.com/jakobfp/pandocwrapper) (check README for setup) and packages in [requirements](./requirements.txt)
 
-You need to download the [CI templates](http://s000.tinyupload.com/?file_id=22689526233418835186) and unzip them in the project root directory:
+You need to download the [CI templates](https://drive.google.com/uc?export=download&id=1B6MKITMW3hA2esRCTxilOGrLN2G1EbYB) and unzip them in the project root directory:
 ```
 pandocwrapper-api
 │   
