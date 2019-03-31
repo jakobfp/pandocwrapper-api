@@ -1,5 +1,7 @@
 # pandocwrapper-api
 
+**Created for a university course**
+
 REST-API for [pandocwrapper](https://github.com/jakobfp/pandocwrapper). With some additional functionalities (check the [docs](#documentation)).
 
 ### Requirements
