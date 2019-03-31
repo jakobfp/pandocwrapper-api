@@ -1,6 +1,6 @@
 # pandocwrapper-api
 
-**Created for a university course**
+**Created for an university course at HTW BERLIN.**
 
 REST-API for [pandocwrapper](https://github.com/jakobfp/pandocwrapper). With some additional functionalities (check the [docs](#documentation)).
 
