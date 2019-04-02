@@ -40,7 +40,7 @@ Find the documentation of the modules here: [https://jakobfp.github.io/pandocwra
 
 ### Dockerfile
 
-Once you cloned this repo and the [pandocwrapper](https://github.com/jakobfp/pandocwrapper) inside a common parent directory, you can use the provided [Dockerfile](.Dockerfile) to create an image and run it inside a container.
+Once you cloned this repo and the [pandocwrapper](https://github.com/jakobfp/pandocwrapper) inside a common parent directory, you can use the provided [Dockerfile](./Dockerfile) to create an image and run it inside a container.
 
 **MOVE THE DOCKERFILE TO THE PARENT DIRECTORY!**
 
