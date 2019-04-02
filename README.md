@@ -2,7 +2,7 @@
 
 **Created for an university course at HTW BERLIN.**
 
-REST-API for [pandocwrapper](https://github.com/jakobfp/pandocwrapper). With some additional functionalities (check the [docs](#documentation)).
+WEB-API for [pandocwrapper](https://github.com/jakobfp/pandocwrapper). With some additional functionalities (check the [docs](#documentation)).
 
 ### Requirements
 
@@ -31,7 +31,7 @@ pandocwrapper-api
 
 ### Documentation
 
-#### RestAPI
+#### WebAPI
 After starting it got to [localhost:5000/api/ui](localhost:5000/api/ui).
 
 #### Modules
