@@ -38,14 +38,3 @@ After starting it got to [localhost:5000/api/ui](localhost:5000/api/ui).
 Find the documentation of the modules here: [https://jakobfp.github.io/pandocwrapper-api/](https://jakobfp.github.io/pandocwrapper-api/)
 
 
-### Dockerfile
-
-Once you cloned this repo and the [pandocwrapper](https://github.com/jakobfp/pandocwrapper) inside a common parent directory, you can use the provided [Dockerfile](./Dockerfile) to create an image and run it inside a container.
-
-**MOVE THE DOCKERFILE TO THE PARENT DIRECTORY!**
-
-```
-docker build -f Dockerfile -t ic19/restapi:1.0 .
-
-docker run -p 5000:5000 ic19/restapi:1.0
-```
