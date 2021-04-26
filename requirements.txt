@@ -23,7 +23,7 @@ pdoc==0.3.2
 Pygments==2.2.0
 pyparsing==2.2.2
 pytz==2018.6
-PyYAML==4.2b1
+PyYAML==5.4
 requests==2.20.0
 six==1.11.0
 snowballstemmer==1.2.1
