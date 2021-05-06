@@ -7,7 +7,7 @@ clickclick==1.2.2
 connexion==2.0.2
 docutils==0.14
 Flask==1.0.2
-Flask-Cors==3.0.7
+Flask-Cors==3.0.9
 idna==2.7
 imagesize==1.1.0
 inflection==0.3.1
